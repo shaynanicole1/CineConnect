@@ -120,7 +120,7 @@ async function getStreamingData() {
 //the function will get the rating data from the OMDB API
 // the apikey value is the key that you need to use to access the API. You can use it as it is or get your own key
 async function getRatingData(imdbId) {
-    let url = "http://www.omdbapi.com";
+    let url = "https://www.omdbapi.com";
     let params = {
         apikey: "5769dc6",
         i: imdbId,
