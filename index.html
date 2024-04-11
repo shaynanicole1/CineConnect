@@ -1,18 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="./assets/css/style.css" />
-        <title>CineConnect</title>
-    </head>
-    <body>
-        <div>
-            <input value="batman" type="text" id="movie-title" />
-            <button type="button" id="search-btn">Search</button>
-            <div id="movie-container"></div>
-        </div>
 
-        <script src="./assets/js/script.js"></script>
-    </body>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <title>CineConnect</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="index.html">
+                    CineSpace
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+
+
+
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary">
+                            <strong>Share</strong>
+                        </a>
+                        <a class="button is-light">
+                            Log in
+                        </a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="navbarBasicExample" class=" is-centered">
+            <div class="navbar">
+                <a class="navbar-item" href="index.html">
+                    Home
+                </a>
+
+                <a class="navbar-item">
+                    Documentation
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Year
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            2021-2024
+                        </a>
+                        <a class="navbar-item">
+                            2016-2020
+                        </a>
+                        <a class="navbar-item">
+                            2011-2015
+                        </a>
+                        <a class="navbar-item">
+                            2006-2010
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Genres
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" id="action-movies">
+                            Action
+                        </a>
+                        <a class="navbar-item" id="drama-movies">
+                            Drama
+                        </a>
+                        <a class="navbar-item" id="horror-movies">
+                            Horror
+                        </a>
+                        <a class="navbar-item" id="sci-movies">
+                            Sci-fi
+                        </a>
+                    </div>
+                </div>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        Pricing
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" id="free-movies">
+                            Available Free
+                        </a>
+                        <a class="navbar-item" id="subscription-movies">
+                            Subscription
+                        </a>
+                        <a class="navbar-item" id="buy-movies">
+                            Buy/rent to watch
+                        </a>
+                    </div>
+                </div>
+
+
+                <a class="navbar-item" href="watchlist.html">
+                    Wachlist
+                </a>
+
+                <input class="input is-rounded my-2 mx-1 has-text-centered" id="movie-title" type="text"
+                    placeholder="Enter the name" />
+                <button class="button is-primary is-light my-2 mx-1" id="search-btn">Search</button>
+            </div>
+
+            <div class="container" id="movie-container">
+                <div class="column mt-5 is-8 is-variable">
+                    <div class="column is-4-tablet is-3-desktop is-1-mobile">
+                        <div class="card">hello</div>
+                    </div>
+                </div>
+            </div>
+
+    </main>
+
+    <footer class="footer has-text-centered">
+        <hr>
+        <p>&#169;Group-4</p>
+    </footer>
+
+
+    <script src="./assets/js/script.js"></script>
+</body>
+
 </html>
