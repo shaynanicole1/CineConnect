@@ -161,14 +161,42 @@ async function search() {
             moviesList.push(movie);
         }
     }
-    return moviesList;
+    return sortMovies(moviesList,"imdbRating"); // Justin: for testing the sorting function
 }
 
 //Justin
 // movies is an array of Movie objects
 // sortingKey is the key that you want to sort the movies by for example "year", "imdbRating", "rottentTomatesRating", etc.
 // you  can use Array.sort() function to sort the movies or implement the sorting algorithm yourself
-function sortMovies(movies, sortingKey) {}
+/*
+Usage Example:
+const sortedMoviesByYear = sortMovies(movies, "year");
+const sortedMoviesByIMDBRating = sortMovies(movies, "imdbRating");
+*/
+function sortMovies(moviesList, sortingKey) {
+    // Check if the sortingKey is valid
+    if (!moviesList.length || !moviesList[0][sortingKey]) {
+        console.error("Invalid sorting key or empty movie list");
+        return [];
+    }
+
+    // Sorting function based on the sortingKey
+    const sortingFunction = (a, b) => {
+        const valueA = a[sortingKey];
+        const valueB = b[sortingKey];
+
+        // For numeric values, convert them to numbers before comparison
+        if (!isNaN(parseFloat(valueA)) && !isNaN(parseFloat(valueB))) {
+            return parseFloat(valueB) - parseFloat(valueA);
+        }
+        
+        // For strings, perform lexicographic comparison
+        return valueA.localeCompare(valueB);
+    };
+
+    // Sort the moviesList array
+    return moviesList.slice().sort(sortingFunction);
+}
 
 //Ehsan
 function showResults(movies) {
