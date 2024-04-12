@@ -83,7 +83,41 @@ function createMovieCard(movie) {
 //Preeya
 // Create a function that will create a modal and show it.
 // when user press "Add to Watchlist" button, it will add the movie to the watchlist and save it to the local storage
-function createModal(movie) {}
+
+function createModal(movie) {
+    document.getElementById("movie-title").textContent = movie.title;
+    document.getElementById("movie-synopsis").textContent = movie.synopsis;
+    document.getElementById("movie-genre").textContent = movie.genre;
+    document.getElementById("movie-release-year").textContent = movie.releaseYear;
+    document.getElementById("movie-rating").textContent = movie.rating;
+    document.getElementById("movie-price").textContent = movie.price;
+    document.getElementById("movie-streaming").textContent = movie.streaming;
+    document.getElementById("movie-detail-modal").style.display = "block";
+  }
+  
+  document.getElementsByClassName("close")[0].onclick = function() {
+    document.getElementById("movie-detail-modal").style.display = "none";
+  }
+  
+  window.onclick = function(event) {
+    if (event.target == document.getElementById("movie-detail-modal")) {
+      document.getElementById("movie-detail-modal").style.display = "none";
+    }
+  }
+
+  function addToWatchList(movie) {
+    let watchList = JSON.parse(localStorage.getItem("watchList")) || [];
+    watchList.push(movie);
+    localStorage.setItem("watchList", JSON.stringify(watchList));
+  }
+
+
+  <button onclick="addToWatchList(movie)">Add to Watch List</button>
+
+
+
+  //title, synopsis, genre, rating, price, line 2-8 shopuld have those properties
+  //have button, calls line 29, html
 
 //Shayna
 //the function will get the streaming data just for Canada
