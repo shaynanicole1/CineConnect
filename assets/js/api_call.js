@@ -166,7 +166,7 @@ async function getStreamingDataByTitle(title) {
 }
 async function getStreamingData(params, url) {
     const headers = {
-        "X-RapidAPI-Key": "cf33ab62edmshde9293530f976e1p11beacjsn53110b32fe2d",
+        "X-RapidAPI-Key": "fef408df15msh8d574d69c7f2528p13da66jsn4f00ef3cb357",
         "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
     };
 
