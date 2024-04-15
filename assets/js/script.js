@@ -168,7 +168,6 @@ async function initPage() {
     let params = createFilterSearchParams(
         currentYear,
         currentYear,
-        null,
         ["Comedy"],
         ["prime", "netflix"],
         false
