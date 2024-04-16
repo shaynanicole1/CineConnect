@@ -2,151 +2,139 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group-4 CineConnect</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
-    <link rel="stylesheet" href="./assets/css/style.css" />
-    <title>CineConnect</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="https://kit.fontawesome.com/4fed1b79f0.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <header>
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-                <a class="navbar-item" href="index.html">
-                    CineSpace
-                </a>
-
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-                    data-target="navbarBasicExample">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
+        <nav class="navbar is-flex-wrap-wrap is-justify-content-space-around">
+            <div class="navbar-brand mx-7">
+                <a class="navbar-item is-centered" href="index.html">
+                    <img src="./assets/images/logo-light.png" alt="logo" style="max-height: 100px;"
+                        class="mx-5 mb-0 px-2 py-0">
                 </a>
             </div>
-
-
-
-
-
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-primary">
-                            <strong>Share</strong>
-                        </a>
-                        <a class="button is-light">
-                            Log in
-                        </a>
-                    </div>
+            <div class="navbar-item is-expanded navbar-end">
+                <div class="field has-addons">
+                    <button class="button mx-5 has-background-link-light" id="watchlist" aria-haspopup="true"
+                        aria-controls="dropdown-menu5">
+                        <a href="watchlist.html"><span>Watchlist</span></a>
+                    </button>
+                    </p>
                 </div>
-            </div>
             </div>
         </nav>
     </header>
 
     <main>
-        <div id="navbarBasicExample" class=" is-centered">
-            <div class="navbar">
-                <a class="navbar-item" href="index.html">
-                    Home
-                </a>
+        <hr class="my-1">
+        <!-- <div class="container is-flex-wrap-wrap is-justify-content-space-around "> -->
 
-                <a class="navbar-item">
-                    Documentation
-                </a>
-
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Year
-                    </a>
-
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item">
-                            2021-2024
-                        </a>
-                        <a class="navbar-item">
-                            2016-2020
-                        </a>
-                        <a class="navbar-item">
-                            2011-2015
-                        </a>
-                        <a class="navbar-item">
-                            2006-2010
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item">
-                            Report an issue
-                        </a>
-                    </div>
-                </div>
-
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Genres
-                    </a>
-
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" id="action-movies">
-                            Action
-                        </a>
-                        <a class="navbar-item" id="drama-movies">
-                            Drama
-                        </a>
-                        <a class="navbar-item" id="horror-movies">
-                            Horror
-                        </a>
-                        <a class="navbar-item" id="sci-movies">
-                            Sci-fi
-                        </a>
-                    </div>
-                </div>
-
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        Pricing
-                    </a>
-
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" id="free-movies">
-                            Available Free
-                        </a>
-                        <a class="navbar-item" id="subscription-movies">
-                            Subscription
-                        </a>
-                        <a class="navbar-item" id="buy-movies">
-                            Buy/rent to watch
-                        </a>
-                    </div>
-                </div>
-
-
-                <a class="navbar-item" href="watchlist.html">
-                    Wachlist
-                </a>
-
-                <input class="input is-rounded my-2 mx-1 has-text-centered" id="movie-title" type="text"
-                    placeholder="Enter the name" />
-                <button class="button is-primary is-light my-2 mx-1" id="search-btn">Search</button>
+        <div class="columns is-mobile is-multiline">
+            <!-- By Year -->
+            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop mx-0 px-0" id="year">
+                <select class=" has-text-centered">
+                    <option value="year">Year</option>
+                    <option value="2024">2021-2024</option>
+                    <option value="2020">2016-2020</option>
+                    <option value="2015">2011-2015</option>
+                    <option value="2010">2006-2010</option>
+                    <option value="2005">2001-2005</option>
+                </select>
             </div>
 
-            <div class="container" id="movie-container">
-                <div class="column mt-5 is-8 is-variable">
-                    <div class="column is-4-tablet is-3-desktop is-1-mobile">
-                        <div class="card">hello</div>
+            <!-- By Genre -->
+            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop" id="genre">
+                <select class="has-text-centered">
+                    <option value="genre">Genre</option>
+                    <option value="horror">Horror</option>
+                    <option value="fanatasy">Fantasy</option>
+                    <option value="drama">Drama</option>
+                    <option value="thriller">Thriller</option>
+                    <option value="mystery">Mystery</option>
+                    <option value="music">Music</option>
+                    <option value="drama">Drama</option>
+                    <option value="romance">Romance</option>
+                    <option value="anime">Anime</option>
+                    <option value="documentary">Documentary</option>
+                </select>
+            </div>
+
+            <!-- By Pricing -->
+            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop" id="pricing">
+                <select class=" has-text-centered">
+                    <option value="Subscription">Subscription</option>
+                    <option value="Rent">Rent/ Buy</option>
+                </select>
+            </div>
+
+            <!-- Search -->
+            <div class="column is-12-mobile is-two-eighth-tablet is-two-eighth-desktop">
+                <input class="mt-1 mx-3 pt-1" type="text" name="search" id="movie-title" cols="20" rows="1"
+                    style="font-size: 16px;"></input>
+                <button class="button has-background-danger" id="search-btn">
+                    Search
+                </button>
+            </div>
+
+            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop">
+                <!-- sort-key -->
+                <!-- use the select -->
+                <div class="dropdown mx-3">
+                    <div class="dropdown-trigger">
+                        <button class="button has-background-link-light" aria-haspopup="true"
+                            aria-controls="dropdown-menu">
+                            <span>Sort-key</span>
+                            <span class="icon is-small">
+                                <i class="fas fa-angle-down" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div class="dropdown-content">
+                            <p class="dropdown-item" id="price-selection">Price</p>
+                            <p class="dropdown-item" id="year-selection">Year</p>
+                            <p class="dropdown-item" id="genre-selection">Genre</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- asc/dsc -->
+            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop">
+                <button class="button has-background-link-light mx-3" id="order">Asc</button>
+            </div>
+
+            <!-- sorting -->
+            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop">
+                <button class="button mx-3 has-background-link-light" id="sort" aria-haspopup="true"
+                    aria-controls="dropdown-menu5">
+                    <span>Sort</span>
+                </button>
+            </div>
+
+        </div>
+
+        <hr class="mt-1">
+
+        <div class="columns is-mobile is-multiline" id="movie-container">
+        </div>
+
+        <hr class="mt-1">
     </main>
 
-    <footer class="footer has-text-centered">
-        <hr>
+    <footer class="is-flex is-justify-content-center">
         <p>&#169;Group-4</p>
     </footer>
-
     <script src="./assets/js/api_call.js"></script>
+
     <script src="./assets/js/script.js"></script>
 </body>
 
