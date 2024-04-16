@@ -2,7 +2,7 @@
 
 // Define the global variables
 const titleInput = document.querySelector("#movie-title");
-const MAX_MOVIES = 5;
+const MAX_MOVIES = 10;
 
 ////////////////////////////////////////////////////////////
 //Test data
@@ -30,36 +30,6 @@ let movie = {
     actors: "Marlon Brando, Al Pacino, James Caan",
 };
 
-// The Movie object can be created by using Movie function (let movie = new Movie(streamingData, ratingData);
-// Shayna will create the Movie objects using the Movie function.
-//others just use the movie object as input to the functions
-////////////////////////////////////////////////////////////
-// streamingData comes from https://streaming-availability.p.rapidapi.com/
-// ratingData comes from http://www.omdbapi.com
-function Movie(streamingData, ratingData) {
-    this.posterUrl = ratingData.Poster;
-    this.title = ratingData.Title;
-    this.imdbRating = ratingData.Ratings[0].Value;
-    this.streaming = [];
-
-    for (let streamingService of streamingData.streamingInfo.ca) {
-        let price = "";
-        if (
-            streamingService.streamingType === "buy" ||
-            streamingService.streamingType === "rent"
-        ) {
-            price = streamingService.price.formatted;
-        } else {
-            price = streamingService.streamingType;
-        }
-        this.streaming.push({
-            service: streamingService.service,
-            type: streamingService.streamingType,
-            price: price,
-        });
-    }
-}
-
 // Alexis
 // Create a function that will create a movie card and return it
 //when user press "Detail" button, it will show the modal
@@ -85,66 +55,35 @@ function createMovieCard(movie) {
 // when user press "Add to Watchlist" button, it will add the movie to the watchlist and save it to the local storage
 function createModal(movie) {}
 
-//Shayna
-//the function will get the streaming data just for Canada
-// the X-RapidAPI-Key value is the key that you need to use to access the API. You can use it as it is or get your own key
-async function getStreamingData() {
-    let url = "https://streaming-availability.p.rapidapi.com/search/title";
-    let params = {
-        title: titleInput.value.trim(),
-        country: "ca",
-        show_type: "all",
-        output_language: "en",
-    };
-    const headers = {
-        "X-RapidAPI-Key": "cf33ab62edmshde9293530f976e1p11beacjsn53110b32fe2d",
-        "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
-    };
-
-    //create the complete URL with the query string
-    let searchParams = new URLSearchParams(params);
-    url += "?" + searchParams.toString();
-
-    try {
-        const responce = await fetch(url, {
-            headers: headers,
-        });
-        const data = await responce.json();
-        return data;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-//Shayna
-//the function will get the rating data from the OMDB API
-// the apikey value is the key that you need to use to access the API. You can use it as it is or get your own key
-async function getRatingData(imdbId) {
-    let url = "https://www.omdbapi.com";
-    let params = {
-        apikey: "5769dc6",
-        i: imdbId,
-    };
-
-    let searchParams = new URLSearchParams(params);
-    url += "?" + searchParams.toString();
-
-    try {
-        const responce = await fetch(url);
-        const data = await responce.json();
-        return data;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-//Shayna
-// Create a function that will search for the movie and display the movie card
-// the functions: getStreamingData and getRatingData will be called in this function and you can change their code if needed
+//Ehsan
+// Create a function that will search for movies and return the list of movies
+// The function will use the titleInput value to search for movies
+// If the titleInput is empty, it will search by other parameters (year, genre, streaming service and price)
 async function search() {
-    let streamingData = await getStreamingData();
+    let streamingData = null;
+    if (titleInput.value.trim() !== "") {
+        streamingData = await getStreamingDataByTitle(titleInput.value.trim());
+    } else {
+        let params = createFilterSearchParams(
+            2024,
+            2024,
+            null,
+            ["prime", "netflix"],
+            false
+        );
+        streamingData = await getStreamingData(params, API_URL.Filter_Search);
+    }
+
+    return createMovieList(streamingData);
+}
+
+async function createMovieList(streamingData) {
     let moviesList = [];
-    for (let i = 0; i < MAX_MOVIES; i++) {
+    for (
+        let i = 0;
+        moviesList.length < MAX_MOVIES && i < streamingData.result.length;
+        i++
+    ) {
         //if the movie is not available in Canada skip it
         if (
             !streamingData.result[i].streamingInfo.ca ||
@@ -154,21 +93,49 @@ async function search() {
         }
 
         let imdbId = streamingData.result[i].imdbId;
-        let ratingData = await getRatingData(imdbId);
+        let ratingData = await getRatingData(imdbId, API_URL.IMDb_Rating);
 
-        if (ratingData) {
+        if (
+            ratingData &&
+            ratingData.Response === "True" &&
+            ratingData.Poster !== "N/A"
+        ) {
             let movie = new Movie(streamingData.result[i], ratingData);
             moviesList.push(movie);
         }
     }
-    return moviesList;
+    return sortMovies(moviesList, "imdbRating"); // Justin: for testing the sorting function
 }
 
-//Justin
-// movies is an array of Movie objects
-// sortingKey is the key that you want to sort the movies by for example "year", "imdbRating", "rottentTomatesRating", etc.
-// you  can use Array.sort() function to sort the movies or implement the sorting algorithm yourself
-function sortMovies(movies, sortingKey) {}
+/*
+Usage Example:
+const sortedMoviesByYear = sortMovies(movies, "year");
+const sortedMoviesByIMDBRating = sortMovies(movies, "imdbRating");
+*/
+function sortMovies(moviesList, sortingKey) {
+    // Check if the sortingKey is valid
+    if (!moviesList.length || !moviesList[0][sortingKey]) {
+        console.error("Invalid sorting key or empty movie list");
+        return [];
+    }
+
+    // Sorting function based on the sortingKey
+    const sortingFunction = (a, b) => {
+        const valueA = a[sortingKey];
+        const valueB = b[sortingKey];
+
+        // For numeric values, convert them to numbers before comparison
+        if (!isNaN(parseFloat(valueA)) && !isNaN(parseFloat(valueB))) {
+            return parseFloat(valueB) - parseFloat(valueA);
+        }
+
+        // For strings, perform lexicographic comparison
+        return valueA.localeCompare(valueB);
+    };
+
+    // Sort the moviesList array
+    return moviesList.slice().sort(sortingFunction);
+}
 
 //Ehsan
 function showResults(movies) {
@@ -195,8 +162,23 @@ async function handleSearch(e) {
     showResults(movies);
 }
 
+//On page load get the streaming data for the new movies and shows them
+async function initPage() {
+    const currentYear = new Date().getFullYear();
+    let params = createFilterSearchParams(
+        currentYear,
+        currentYear,
+        ["Comedy"],
+        ["prime", "netflix"],
+        false
+    );
+    let streamingData = await getStreamingData(params, API_URL.Filter_Search);
+    let moviesList = await createMovieList(streamingData);
+    showResults(moviesList);
+}
 document.addEventListener("DOMContentLoaded", function () {
     document
         .querySelector("#search-btn")
         .addEventListener("click", handleSearch);
+    initPage();
 });
