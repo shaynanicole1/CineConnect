@@ -80,6 +80,20 @@ function createMovieCard(movie) {
     return column;
 }
 
+function handleCardDetailBtn(event) {
+    //search for the movie in the moviesList array by imdbId
+    let imdbid = event.target.getAttribute("data-imdbid");
+    let movie = moviesList.find((movie) => movie.imdbID === imdbid);
+    if (movie) {
+        let modal = createModalDlg(movie);
+        modal.classList.add("is-active");
+    } else {
+        console.error("Movie not found!");
+    }
+}
+
+
+
 //Preeya
 
 function createModalDlg(movie) {
