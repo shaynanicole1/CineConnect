@@ -208,6 +208,7 @@ async function createMovieList(streamingData) {
 }
 
 /*
+Justin
 Usage Example:
 const sortedMoviesByYear = sortMovies(movies, "year");
 const sortedMoviesByIMDBRating = sortMovies(movies, "imdbRating");
@@ -221,20 +222,33 @@ function sortMovies(moviesList, sortingKey) {
 
     // Sorting function based on the sortingKey
     const sortingFunction = (a, b) => {
-        const valueA = a[sortingKey];
-        const valueB = b[sortingKey];
+        const valueA = getValueForKey(a, sortingKey);
+        const valueB = getValueForKey(b, sortingKey);
 
         // For numeric values, convert them to numbers before comparison
         if (!isNaN(parseFloat(valueA)) && !isNaN(parseFloat(valueB))) {
             return parseFloat(valueB) - parseFloat(valueA);
         }
-
+        
         // For strings, perform lexicographic comparison
         return valueA.localeCompare(valueB);
     };
 
     // Sort the moviesList array
     return moviesList.slice().sort(sortingFunction);
+}
+
+/*
+Justin
+Helper function to get values if sorting key == "price"
+*/
+function getValueForKey(movie, sortingKey) {
+    if (sortingKey === 'price') {
+        // If sorting by price, get the minimum price among all streaming options
+        return Math.min(...movie.streaming.map(option => parseFloat(option.price.replace(/[^\d.]/g, ''))));
+    } else {
+        return movie[sortingKey];
+    }
 }
 
 //Ehsan
