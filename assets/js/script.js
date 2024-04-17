@@ -51,9 +51,79 @@ function createMovieCard(movie) {
 }
 
 //Preeya
-// Create a function that will create a modal and show it.
-// when user press "Add to Watchlist" button, it will add the movie to the watchlist and save it to the local storage
-function createModal(movie) {}
+
+function createModalDlg(movie) {
+    let modal = document.createElement("div");
+    modal.setAttribute("id", "modal_dialog");
+    modal.setAttribute("class", "modal");
+
+    modal.innerHTML = `<div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">${movie.title}</p>
+        <button id="close-modal" class="delete" aria-label="close" onclick="document.getElementById('modal_dialog').classList.remove('is-active');"></button>
+      </header>
+      <section class="modal-card-body">
+      <img
+        src="${movie.posterUrl}"
+        alt="movie poster"
+      />
+      <h2 class="is-size-3">${movie.title}</h2>
+      <p><strong>IMDB Rating:</strong> ${movie.imdbRating}</p>
+      <p><strong>Runtime:</strong> ${movie.runtime}</p>
+      <p><strong>Rating:</strong> ${movie.rating}</p>
+      <p><strong>Genres:</strong> ${movie.genres.join(", ")}</p>
+      <p><strong>Year:</strong> ${movie.year}</p>
+      <p><strong>Plot:</strong> <blockquote style="padding:0px 10px;">${
+          movie.plot
+      }</blockquote></p>
+      <p><strong>Cast:</strong> ${movie.actors}</p>
+      <p><strong>Director:</strong> ${movie.director}</p>
+      <p><strong>Streaming Services:</strong></p>
+      <ul style="padding-left:2rem;">
+          ${movie.streaming
+              .map((stream) => {
+                  return `<li>${stream.service} - ${stream.type} - ${stream.price}`;
+              })
+              .join("")}
+      </ul>
+  
+      </section>
+      <footer class="modal-card-foot ">
+        <div class="buttons">
+        <button onclick="handleAddToWatchList(event)" data-imdbid="${
+            movie.imdbID
+        }" class="button is-primary">Add to Watch List</button>
+        </div>
+      </footer>
+    </div>`;
+
+    let container = document.getElementById("modal-dialog-container");
+    container.innerHTML = "";
+    container.appendChild(modal);
+
+    return modal;
+}
+
+
+function handleAddToWatchList(event) {
+    // add the movie to the local storage
+    // get the imdbId from the event
+    console.log("Add to watch list button clicked!");
+    let imdbId = event.target.getAttribute("data-imdbid");
+    console.log("IMDB ID: ", imdbId);
+    let movie = moviesList.find((movie) => movie.imdbID === imdbId);
+    console.log("Movie to add to watch list: ", movie);
+    if (movie) {
+        let watchList = JSON.parse(localStorage.getItem("watchList")) || [];
+        // check if the movie is already in the watch list
+        if (watchList.find((m) => m.imdbID === imdbId)) {
+            return;
+        }
+        watchList.push(movie);
+        localStorage.setItem("watchList", JSON.stringify(watchList));
+    }
+}
 
 //Ehsan
 // Create a function that will search for movies and return the list of movies
