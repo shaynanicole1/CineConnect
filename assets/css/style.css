@@ -7,3 +7,24 @@ a {
     color: black;
     text-decoration: none;
 }
+
+.card {
+    display: inline-block;
+    border: 1px solid;
+    margin: 10px;
+    padding: 10px;
+}
+
+.card-content .content p {
+    margin: 0;
+    padding: 0px;
+}
+
+.card {
+    position: relative;
+}
+.card footer button {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+}
