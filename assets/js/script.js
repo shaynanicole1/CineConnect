@@ -34,20 +34,50 @@ let movie = {
 // Create a function that will create a movie card and return it
 //when user press "Detail" button, it will show the modal
 function createMovieCard(movie) {
-    let card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-        <img src="${movie.posterUrl}" class="card-img-top" alt="${movie.title}">
-        <div class="card-body">
-            <h3 >${movie.title}</h3>
-            <h5 >${movie.imdbRating}</h5>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                Detail
-            </button>
-        </div>
-    `;
+    let column = document.createElement("div");
+    column.setAttribute(
+        "class",
+        "column is-12-tablet is-6-desktop is-4-widescreen is-3-fullhd"
+    );
 
-    return card;
+    let card = document.createElement("div");
+    card.setAttribute("class", "card");
+
+    column.appendChild(card);
+
+    card.innerHTML = `<div class="card-image">
+    <figure class="image is-4by3">
+      <img
+        src="${movie.posterUrl}"
+        alt="${movie.title} poster"
+      />
+    </figure>
+  </div>
+  <div class="card-content">
+    <div class="content">
+        <h3>${movie.title}</h3>
+        <span class="mr-2">${movie.year}</span>
+        <span class="mr-2">${movie.imdbRating}/10</span>
+        <span>${movie.runtime}</span>
+        <p><strong>Rating:</strong> ${movie.rating}</p>
+        <p><strong>Genres:</strong> ${movie.genres.join(", ")}</p>
+        <p><strong>Streaming:</strong></p>
+        <ul>
+            ${movie.streaming
+                .map((stream) => {
+                    return `<li>${stream.service} - ${stream.type} - ${stream.price}`;
+                })
+                .join("")}
+        </ul>
+        <footer class="card-footer ">
+            <button onclick="handleCardDetailBtn(event)" data-imdbid="${
+                movie.imdbID
+            }" class="button is-primary">Details...</button>
+      </footer>
+    </div>
+  </div>`;
+
+    return column;
 }
 
 //Preeya
