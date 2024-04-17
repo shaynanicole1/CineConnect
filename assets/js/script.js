@@ -281,6 +281,7 @@ function showResults(movies) {
         let movieCard = createMovieCard(movie);
         movieContainer.appendChild(movieCard);
     }
+        makeCardsEqualSize();
 }
 
 //Hussein
