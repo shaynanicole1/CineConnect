@@ -92,7 +92,27 @@ function handleCardDetailBtn(event) {
     }
 }
 
-
+function makeCardsEqualSize() {
+    let maxHeight = Math.max.apply(
+        null,
+        $(".card")
+            .map(function () {
+                return $(this).height();
+            })
+            .get()
+    );
+    let maxWidth = Math.max.apply(
+        null,
+        $(".card")
+            .map(function () {
+                return $(this).width();
+            })
+            .get()
+    );
+    // Set the height of all cards to the tallest one
+    $(".card").height(maxHeight);
+    $(".card").width(maxWidth);
+}
 
 //Preeya
 
