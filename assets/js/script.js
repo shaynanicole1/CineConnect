@@ -188,8 +188,6 @@ function handleAddToWatchList(event) {
     }
 }
 
-
-
 //Ehsan
 // Create a function that will search for movies and return the list of movies
 // The function will use the titleInput value to search for movies
@@ -305,10 +303,64 @@ function showResults(movies) {
 
 //Hussein
 // this code will be called when the watch list page is loaded
-function loadWatchList() {
+
     // load the watchlist from the local storage
     // create the movie cards and display them
-}
+    function handleAddToWatchList(event) {
+        console.log("Add to watch list button clicked!");
+    
+        // Get the IMDb ID of the movie from the button's data attribute
+        let imdbId = event.target.getAttribute("data-imdbid");
+        console.log("IMDB ID: ", imdbId);
+    
+        // Find the movie in the moviesList array
+        let movie = moviesList.find((movie) => movie.imdbID === imdbId);
+        console.log("Movie to add to watch list: ", movie);
+    
+        // If the movie is found, add it to the watch list in local storage
+        if (movie) {
+            let watchList = JSON.parse(localStorage.getItem("watchList")) || [];
+            console.log("Current watch list:", watchList);
+    
+            // Check if the movie is already in the watch list
+            if (watchList.find((m) => m.imdbID === imdbId)) {
+                console.log("Movie is already in the watch list!");
+                return;
+            }
+    
+            // Add the movie to the watch list
+            watchList.push(movie);
+            localStorage.setItem("watchList", JSON.stringify(watchList));
+    
+            console.log("Movie added to watch list:", movie);
+    
+            // Log the updated watch list
+            console.log("Updated watch list:", watchList);
+        }
+    }
+    
+    
+    function loadWatchList() {
+        // Get the watchlist from local storage
+        const watchList = JSON.parse(localStorage.getItem("watchList")) || [];
+    
+        // Get the container where movie cards will be displayed
+        const movieContainer = document.querySelector("#movie-container");
+    
+        // Clear any existing movie cards
+        movieContainer.innerHTML = "";
+    
+        // Create and display movie cards for each movie in the watchlist
+        watchList.forEach((movie) => {
+            const movieCard = createMovieCard(movie); // Create movie card for current movie
+            movieContainer.appendChild(movieCard); // Append movie card to container
+        });
+    }
+    
+
+    
+
+
 
 async function handleSearch(e) {
     let movies = await search();
@@ -328,11 +380,15 @@ async function initPage() {
     );
     let streamingData = await getStreamingData(params, API_URL.Filter_Search);
     moviesList = await createMovieList(streamingData);
+    console.log(moviesList); // Add this line to inspect moviesList
     showResults(moviesList);
 }
+
 document.addEventListener("DOMContentLoaded", function () {
-    document
-        .querySelector("#search-btn")
-        .addEventListener("click", handleSearch);
+    const searchButton = document.getElementById("search-btn");
+    if (searchButton) {
+        searchButton.addEventListener("click", handleSearch);
+    }
+
     initPage();
 });
