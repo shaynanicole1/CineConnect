@@ -221,11 +221,11 @@ Usage Example:
 const sortedMoviesByYear = sortMovies(movies, "year");
 const sortedMoviesByIMDBRating = sortMovies(movies, "imdbRating");
 */
-function sortMovies(moviesList, sortingKey) {
+function sortMovies(moviesList, sortingKey, ascending = false) {
     // Check if the sortingKey is valid
-    if (!moviesList.length || !moviesList[0][sortingKey]) {
+    if (["imdbRating", "year"].indexOf(sortingKey) === -1) {
         console.error("Invalid sorting key or empty movie list");
-        return [];
+        return moviesList;
     }
 
     // Sorting function based on the sortingKey
@@ -243,7 +243,11 @@ function sortMovies(moviesList, sortingKey) {
     };
 
     // Sort the moviesList array
-    return moviesList.slice().sort(sortingFunction);
+    if (ascending) {
+        return moviesList.slice().sort(sortingFunction).reverse();
+    } else {
+        return moviesList.slice().sort(sortingFunction);
+    }
 }
 
 /*
@@ -284,9 +288,8 @@ function loadWatchList() {
     // create the movie cards and display them
 }
 
-async function handleSearch(e) {
+async function handleTitleSearch(e) {
     let movies = await search();
-
     showResults(movies);
 }
 
@@ -309,7 +312,7 @@ function addStreamingChip(streamingName) {
     let streamingChip = document.createElement("div");
     streamingChip.setAttribute("class", "chip column is-6 my-2");
     streamingChip.setAttribute("data-stream-name", streamingName);
-    streamingChip.innerHTML = `${streamingName}<span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>`;
+    streamingChip.innerHTML = `${streamingName}<span class="closebtn" onclick="this.parentElement.parentElement.removeChild(this.parentElement);">&times;</span>`;
 
     let streamingChips = document
         .querySelector("#streaming-chips")
@@ -324,15 +327,76 @@ function addStreamingChip(streamingName) {
     document.querySelector("#streaming-chips").appendChild(streamingChip);
 }
 
+function handleSorting() {
+    let sortingKey = document.querySelector("#sorting-key").value;
+    let ascending =
+        document.querySelector("#sorting-order").textContent === "0↗9";
+    moviesList = sortMovies(moviesList, sortingKey, ascending);
+    showResults(moviesList);
+}
+
+function getStreamingServicesList() {
+    let streamingServices = Array.from(document.querySelectorAll(".chip")).map(
+        (chip) => chip.getAttribute("data-stream-name")
+    );
+    streamingServices =
+        streamingServices.length > 0
+            ? streamingServices
+            : ["prime", "netflix", "disney", "apple", "paramont"];
+    return streamingServices;
+}
+function getFilterParams() {
+    let yearFrom = document.querySelector("#from-year").value;
+    let yearTo = document.querySelector("#to-year").value;
+    if (
+        yearFrom === "" ||
+        yearTo === "" ||
+        parseInt(yearFrom) > parseInt(yearTo)
+    ) {
+        yearFrom = null;
+        yearTo = null;
+    }
+
+    let genres = document.querySelector("#genre").value;
+    genres = genres ? [genres] : null;
+    let streamingServices = getStreamingServicesList();
+    let isPriceFree = document.querySelector("#price").value === "subscription";
+
+    let params = createFilterSearchParams(
+        yearFrom,
+        yearTo,
+        genres,
+        streamingServices,
+        isPriceFree
+    );
+    return params;
+}
+async function handleFilterSearch() {
+    let params = getFilterParams();
+
+    let streamingData = await getStreamingData(params, API_URL.Filter_Search);
+
+    let streamingServices = getStreamingServicesList();
+    filterMoviesByStream(streamingData, streamingServices);
+
+    moviesList = await createMovieList(streamingData);
+    showResults(moviesList);
+}
 document.addEventListener("DOMContentLoaded", function () {
     document
         .querySelector("#search-btn")
-        .addEventListener("click", handleSearch);
+        .addEventListener("click", handleTitleSearch);
     document
         .getElementById("streaming-service")
         .addEventListener("change", (e) => {
             addStreamingChip(e.target.value);
         });
+    document
+        .getElementById("sort-btn")
+        .addEventListener("click", handleSorting);
+    document
+        .getElementById("filter-btn")
+        .addEventListener("click", handleFilterSearch);
     //initPage();
     loadWatchList();
 });

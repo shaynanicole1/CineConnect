@@ -54,7 +54,7 @@ function Movie(streamingData, movieData) {
         ) {
             price = streamingService.price.formatted;
         } else {
-            price = streamingService.streamingType;
+            price = "";
         }
         this.streaming.push({
             service: streamingService.service,
@@ -164,16 +164,35 @@ async function getStreamingDataByTitle(title) {
     });
     return streamingData;
 }
+
+function filterMoviesByStream(streamingData, services) {
+    let filteredMovies = [];
+    for (let movie of streamingData.result) {
+        let streams = [];
+        for (let service of services) {
+            for (let stream of movie.streamingInfo.ca) {
+                if (stream.service === service) {
+                    streams.push(stream);
+                }
+            }
+        }
+        if (streams.length > 0) {
+            movie.streamingInfo.ca = streams;
+            filteredMovies.push(movie);
+        }
+    }
+    streamingData.result = filteredMovies;
+}
 async function getStreamingData(params, url) {
     const headers = {
-        "X-RapidAPI-Key": "fef408df15msh8d574d69c7f2528p13da66jsn4f00ef3cb357",
+        "X-RapidAPI-Key": "cf33ab62edmshde9293530f976e1p11beacjsn53110b32fe2d",
         "X-RapidAPI-Host": "streaming-availability.p.rapidapi.com",
     };
 
     //create the complete URL with the query string
     let searchParams = new URLSearchParams(params);
     url += "?" + searchParams.toString();
-
+    console.log(url);
     try {
         const responce = await fetch(url, {
             headers: headers,

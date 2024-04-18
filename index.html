@@ -39,15 +39,15 @@
     <main>
         <hr class="my-1">
         <div id="main-cols" class="columns is-mobile is-multiline mt-3">
-            <div id="search-col" class="column is-12-mobile is-3-tablet is-2-desktop px-5" style="border-right:2px solid grey;">
+            <div id="search-col" class="column is-11-mobile is-3-tablet is-2-desktop px-5" style="border-right:2px solid grey;">
                 <!-- title text box -->
                 <input id="movie-title" class="input is-rounded my-1" type="text" placeholder="Movie Title" />
                 <!-- Search by title Button -->
                 <button id="search-btn" class="button is-primary" style="width:100%;">Search by Title</button>
                 <hr class="my-4">
                 <!-- genre dropdown -->
-                <div id="genre" class="select my-1" style="width: 100%;">
-                    <select id="genreSelect" style="width: 100%;">
+                <div id="genreSelect" class="select my-1" style="width: 100%;">
+                    <select id="genre" style="width: 100%;">
                         <option value="" style="color:rgb(151, 164, 164);" selected>Genre</option>
                         <option value="Action">Action</option>
                         <option value="Adventure">Adventure</option>
@@ -102,7 +102,7 @@
                 </div>
                 <button id="filter-btn" class="button is-primary mt-3" style="width:100%;">Search by Filter</button>
             </div>
-            <div id="right-col" class="column is-12-mobile is-9-tablet is-10-desktop ">
+            <div id="right-col" class="column is-11-mobile is-9-tablet is-10-desktop ">
                 <div id="sort-cards-cols" class="columns is-mobile is-multiline">
                     <div id="sort-col" id="" class="column is-12">
                         <!-- sorting key select -->
@@ -110,7 +110,6 @@
                             <select id="sorting-key">
                                 <option value="imdbRating">IMDb Rating</option>
                                 <option value="year">Release Year</option>
-                                <option value="price">Price</option>
                             </select>
                         </div>
                         <!-- sort order toggle button -->
