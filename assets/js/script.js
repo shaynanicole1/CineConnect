@@ -188,6 +188,8 @@ function handleAddToWatchList(event) {
     }
 }
 
+
+
 //Ehsan
 // Create a function that will search for movies and return the list of movies
 // The function will use the titleInput value to search for movies
