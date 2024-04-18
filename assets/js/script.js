@@ -145,6 +145,7 @@ function createModalDlg(movie) {
 }
 
 async function createMovieList(streamingData) {
+
     moviesList = [];
     for (
         let i = 0;
@@ -237,7 +238,6 @@ function showResultsInIndex(movies) {
     }
     makeCardsEqualSize();
 }
-
 
 //On page load get the streaming data for the new movies and shows them
 async function initPage() {
