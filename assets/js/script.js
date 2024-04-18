@@ -3,7 +3,7 @@
 // Define the global variables
 const titleInput = document.querySelector("#movie-title");
 const MAX_MOVIES = 10;
-
+let moviesList = [];
 ////////////////////////////////////////////////////////////
 //Test data
 // the movie object is an example of the data that you will use as input to the functions
@@ -169,7 +169,6 @@ function createModalDlg(movie) {
     return modal;
 }
 
-
 function handleAddToWatchList(event) {
     // add the movie to the local storage
     // get the imdbId from the event
@@ -212,7 +211,7 @@ async function search() {
 }
 
 async function createMovieList(streamingData) {
-    let moviesList = [];
+    moviesList = [];
     for (
         let i = 0;
         moviesList.length < MAX_MOVIES && i < streamingData.result.length;
@@ -263,7 +262,7 @@ function sortMovies(moviesList, sortingKey) {
         if (!isNaN(parseFloat(valueA)) && !isNaN(parseFloat(valueB))) {
             return parseFloat(valueB) - parseFloat(valueA);
         }
-        
+
         // For strings, perform lexicographic comparison
         return valueA.localeCompare(valueB);
     };
@@ -277,9 +276,13 @@ Justin
 Helper function to get values if sorting key == "price"
 */
 function getValueForKey(movie, sortingKey) {
-    if (sortingKey === 'price') {
+    if (sortingKey === "price") {
         // If sorting by price, get the minimum price among all streaming options
-        return Math.min(...movie.streaming.map(option => parseFloat(option.price.replace(/[^\d.]/g, ''))));
+        return Math.min(
+            ...movie.streaming.map((option) =>
+                parseFloat(option.price.replace(/[^\d.]/g, ""))
+            )
+        );
     } else {
         return movie[sortingKey];
     }
@@ -295,7 +298,7 @@ function showResults(movies) {
         let movieCard = createMovieCard(movie);
         movieContainer.appendChild(movieCard);
     }
-        makeCardsEqualSize();
+    makeCardsEqualSize();
 }
 
 //Hussein
@@ -322,7 +325,7 @@ async function initPage() {
         false
     );
     let streamingData = await getStreamingData(params, API_URL.Filter_Search);
-    let moviesList = await createMovieList(streamingData);
+    moviesList = await createMovieList(streamingData);
     showResults(moviesList);
 }
 document.addEventListener("DOMContentLoaded", function () {
