@@ -69,7 +69,7 @@ function createMovieCard(movie) {
                 })
                 .join("")}
         </ul>
-        <footer class="card-footer ">
+        <footer class="card-footer">
             <button onclick="handleCardDetailBtn(event)" data-imdbid="${
                 movie.imdbID
             }" class="button is-primary">Details...</button>
@@ -305,6 +305,8 @@ function showResults(movies) {
 // this code will be called when the watch list page is loaded
 function loadWatchList() {
     // load the watchlist from the local storage
+    moviesList = JSON.parse(localStorage.getItem("watchList")) || [];
+    showResults(moviesList);
     // create the movie cards and display them
 }
 
@@ -332,5 +334,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document
         .querySelector("#search-btn")
         .addEventListener("click", handleSearch);
-    initPage();
+    //initPage();
+    loadWatchList();
 });

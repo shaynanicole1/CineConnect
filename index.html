@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./assets/css/style.css">
     <script src="https://kit.fontawesome.com/4fed1b79f0.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -37,107 +38,109 @@
 
     <main>
         <hr class="my-1">
-        <!-- <div class="container is-flex-wrap-wrap is-justify-content-space-around "> -->
+        <div id="main-cols" class="columns is-mobile is-multiline mt-3">
+            <div id="search-col" class="column is-12-mobile is-3-tablet is-2-desktop px-5" style="border-right:2px solid grey;">
+                <!-- title text box -->
+                <input id="movie-title" class="input is-rounded my-1" type="text" placeholder="Movie Title" />
+                <!-- Search by title Button -->
+                <button id="search-btn" class="button is-primary" style="width:100%;">Search by Title</button>
+                <hr class="my-4">
+                <!-- genre dropdown -->
+                <div id="genre" class="select my-1" style="width: 100%;">
+                    <select id="genreSelect" style="width: 100%;">
+                        <option value="" style="color:rgb(151, 164, 164);" selected>Genre</option>
+                        <option value="Action">Action</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Animation">Animation</option>
+                        <option value="Comedy">Comedy</option>
+                        <option value="Crime">Crime</option>
+                        <option value="Documentary">Documentary</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Family">Family</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="History">History</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Music">Music</option>
+                        <option value="Mystery">Mystery</option>
+                        <option value="News">News</option>
+                        <option value="Reality">Reality</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Science Fiction">Science Fiction</option>
+                        <option value="Talk Show">Talk Show</option>
+                        <option value="Thriller">Thriller</option>
+                        <option value="War">War</option>
+                        <option value="Western">Western</option>
+                    </select>
 
-        <div class="columns is-mobile is-multiline">
-            <!-- By Year -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop mx-0 px-0" id="year">
-                <select class=" has-text-centered">
-                    <option value="year">Year</option>
-                    <option value="2024">2021-2024</option>
-                    <option value="2020">2016-2020</option>
-                    <option value="2015">2011-2015</option>
-                    <option value="2010">2006-2010</option>
-                    <option value="2005">2001-2005</option>
-                </select>
+                </div>
+                <!-- release year -->
+                <input class="input mt-3" type="number" id="from-year"
+                    onchange="document.getElementById('to-year').value = document.getElementById('to-year').placeholder;"
+                    name="fromYear" min="1960" max="2024" placeholder="from year">
+                <input class="input mb-3" type="number" id="to-year"
+                    onfocus="this.setAttribute('min',document.getElementById('from-year').value||1960);" name="toYear"
+                    min="1960" max="2024" placeholder="to year">
+                <!-- Streaming Services -->
+                <div class="select my-1" style="width: 100%;">
+                    <select id="streaming-service" style="width: 100%;">
+                        <option value="" style="color:rgb(151, 164, 164);" selected>Streaming Service</option>
+                        <option value="prime">Amazon Prime</option>
+                        <option value="netflix">Netflix</option>
+                        <option value="apple">Apple TV</option>
+                        <option value="disney">Disney+</option>
+                        <option value="paramount">Paramount</option>
+                    </select>
+                </div>
+                <!-- Price -->
+                <div class="select my-1" style="width: 100%;">
+                    <select id="price" style="width: 100%;">
+                        <option value="" style="color:rgb(151, 164, 164);" selected>Price</option>
+                        <option value="all">All</option>
+                        <option value="subscription">Subscription</option>
+                        <option value="rent_buy">Rent/Buy</option>
+                    </select>
+                </div>
+                <button id="filter-btn" class="button is-primary mt-3" style="width:100%;">Search by Filter</button>
             </div>
+            <div id="right-col" class="column is-12-mobile is-9-tablet is-10-desktop ">
+                <div id="sort-cards-cols" class="columns is-mobile is-multiline">
+                    <div id="sort-col" id="" class="column is-12">
+                        <!-- sorting key select -->
+                        <div class="select ml-2">
+                            <select id="sorting-key">
+                                <option value="imdbRating">IMDb Rating</option>
+                                <option value="year">Release Year</option>
+                                <option value="price">Price</option>
+                            </select>
+                        </div>
+                        <!-- sort order toggle button -->
+                        <button id="sorting-order" class="button ">9↘0</button>
 
-            <!-- By Genre -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop" id="genre">
-                <select class="has-text-centered">
-                    <option value="genre">Genre</option>
-                    <option value="horror">Horror</option>
-                    <option value="fanatasy">Fantasy</option>
-                    <option value="drama">Drama</option>
-                    <option value="thriller">Thriller</option>
-                    <option value="mystery">Mystery</option>
-                    <option value="music">Music</option>
-                    <option value="drama">Drama</option>
-                    <option value="romance">Romance</option>
-                    <option value="anime">Anime</option>
-                    <option value="documentary">Documentary</option>
-                </select>
-            </div>
-
-            <!-- By Pricing -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop" id="pricing">
-                <select class=" has-text-centered">
-                    <option value="Subscription">Subscription</option>
-                    <option value="Rent">Rent/ Buy</option>
-                </select>
-            </div>
-
-            <!-- Search -->
-            <div class="column is-12-mobile is-two-eighth-tablet is-two-eighth-desktop">
-                <input class="mt-1 mx-3 pt-1" type="text" name="search" id="movie-title" cols="20" rows="1"
-                    style="font-size: 16px;"></input>
-                <button class="button has-background-danger" id="search-btn">
-                    Search
-                </button>
-            </div>
-
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop">
-                <!-- sort-key -->
-                <!-- use the select -->
-                <div class="dropdown mx-3">
-                    <div class="dropdown-trigger">
-                        <button class="button has-background-link-light" aria-haspopup="true"
-                            aria-controls="dropdown-menu">
-                            <span>Sort-key</span>
-                            <span class="icon is-small">
-                                <i class="fas fa-angle-down" aria-hidden="true"></i>
-                            </span>
-                        </button>
+                        <button id="sort-btn" class="button is-primary">Sort</button>
                     </div>
-                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                        <div class="dropdown-content">
-                            <p class="dropdown-item" id="price-selection">Price</p>
-                            <p class="dropdown-item" id="year-selection">Year</p>
-                            <p class="dropdown-item" id="genre-selection">Genre</p>
+                    <div id="cards-col" class="column is-12" style="border-bottom:2px solid rgb(215, 205, 205);">
+                        <div id="movie-container" class="columns is-mobile is-multiline">
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- asc/dsc -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop">
-                <button class="button has-background-link-light mx-3" id="order">Asc</button>
-            </div>
-
-            <!-- sorting -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop">
-                <button class="button mx-3 has-background-link-light" id="sort" aria-haspopup="true"
-                    aria-controls="dropdown-menu5">
-                    <span>Sort</span>
-                </button>
-            </div>
-
         </div>
+        <script>
+            const sortOrderBtn = document.getElementById("sorting-order");
 
-        <hr class="mt-1">
+            sortOrderBtn.addEventListener('click', function () {
+                if (this.textContent === '9↘0') {
+                    sortOrderBtn.textContent = '0↗9';
+                }
+                else {
+                    sortOrderBtn.textContent = '9↘0';
+                }
+            });
 
-        <div class="columns is-mobile is-multiline" id="movie-container">
-        </div>
+        </script>
+        <script src="./assets/js/api_call.js"></script>
+        <script src="./assets/js/script.js"></script>
 
-        <hr class="mt-1">
-    </main>
-
-    <footer class="is-flex is-justify-content-center">
-        <p>&#169;Group-4</p>
-    </footer>
-    <script src="./assets/js/api_call.js"></script>
-
-    <script src="./assets/js/script.js"></script>
 </body>
 
 </html>
