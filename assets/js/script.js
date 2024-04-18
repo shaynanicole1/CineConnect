@@ -154,11 +154,17 @@ function createModalDlg(movie) {
   
       </section>
       <footer class="modal-card-foot ">
-        <div class="buttons">
-        <button onclick="handleAddToWatchList(event)" data-imdbid="${
-            movie.imdbID
-        }" class="button is-primary">Add to Watch List</button>
-        </div>
+      <div class="buttons">
+      ${
+          window.location.pathname.includes("watchlist.html")
+              ? `<button onclick="handleRemoveFromWatchList(event)" data-imdbid="${
+                    movie.imdbID
+                }" class="button is-danger">Remove from Watch List</button>`
+              : `<button onclick="handleAddToWatchList(event)" data-imdbid="${
+                    movie.imdbID
+                }" class="button is-primary">Add to Watch List</button>`
+      }
+  </div>
       </footer>
     </div>`;
 
@@ -168,6 +174,31 @@ function createModalDlg(movie) {
 
     return modal;
 }
+function handleRemoveFromWatchList(event) {
+    console.log("Remove from watch list button clicked!");
+
+    // Get the IMDb ID of the movie from the button's data attribute
+    let imdbId = event.target.getAttribute("data-imdbid");
+    console.log("IMDB ID: ", imdbId);
+
+    // Get the watchlist from local storage
+    let watchList = JSON.parse(localStorage.getItem("watchList")) || [];
+
+    // Find the index of the movie in the watchlist
+    let index = watchList.findIndex((movie) => movie.imdbID === imdbId);
+
+    // If the movie is found in the watchlist, remove it
+    if (index !== -1) {
+        watchList.splice(index, 1);
+        localStorage.setItem("watchList", JSON.stringify(watchList));
+        console.log("Movie removed from watch list:", imdbId);
+        // Reload the page to reflect the changes
+        location.reload();
+    } else {
+        console.log("Movie not found in watch list!");
+    }
+}
+
 
 function handleAddToWatchList(event) {
     // add the movie to the local storage
