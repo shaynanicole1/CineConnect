@@ -22,9 +22,34 @@ a {
 
 .card {
     position: relative;
+    background-color: blanchedalmond;
 }
+
 .card footer button {
     position: absolute;
     bottom: 1rem;
     right: 1rem;
-} 
+}
+
+.chip {
+    display: inline-block;
+    padding: 0 1rem;
+    height: 2rem;
+    /* font-size: 16px; */
+    line-height: 2rem;
+    border-radius: 25px;
+    background-color: #f1f1f1;
+}
+
+.closebtn {
+    padding-left: 10px;
+    color: #888;
+    font-weight: bold;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.closebtn:hover {
+    color: #000;
+}

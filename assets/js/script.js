@@ -4,36 +4,11 @@
 const titleInput = document.querySelector("#movie-title");
 const MAX_MOVIES = 10;
 let moviesList = [];
-////////////////////////////////////////////////////////////
-//Test data
-// the movie object is an example of the data that you will use as input to the functions
-let movie = {
-    posterUrl: "https://m.media-amazon.com/images/I/71r9HrZl0cL._AC_SY679_.jpg",
-    title: "The Godfather",
-    runtime: "176 min",
-    rating: "PG-13",
-    imdbRating: "9.2",
-    rottentTomatesRating: "98%",
-    streaming: [
-        { service: "netflix", type: "buy", price: "$5.99", currency: "USD" },
-        { service: "netflix", type: "rent", price: "$3.99", currency: "USD" },
-        {
-            service: "prime",
-            type: "subscription",
-            price: "9.99 CAD",
-        },
-    ],
-    plot: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-    genres: ["Crime", "Drama"],
-    year: "1972",
-    director: "Francis Ford Coppola",
-    actors: "Marlon Brando, Al Pacino, James Caan",
-};
 
 // Alexis
 // Create a function that will create a movie card and return it
 //when user press "Detail" button, it will show the modal
-function createMovieCard(movie) {
+function createMovieCard(movie, buttonText, buttonFunction) {
     let column = document.createElement("div");
     column.setAttribute(
         "class",
@@ -69,10 +44,10 @@ function createMovieCard(movie) {
                 })
                 .join("")}
         </ul>
-        <footer class="card-footer ">
-            <button onclick="handleCardDetailBtn(event)" data-imdbid="${
-                movie.imdbID
-            }" class="button is-primary">Details...</button>
+        <footer class="card-footer">
+            <button onclick="${buttonFunction}(event)" data-imdbid="${
+        movie.imdbID
+    }" class="button is-primary">${buttonText}</button>
       </footer>
     </div>
   </div>`;
@@ -169,49 +144,6 @@ function createModalDlg(movie) {
     return modal;
 }
 
-function handleAddToWatchList(event) {
-    // add the movie to the local storage
-    // get the imdbId from the event
-    console.log("Add to watch list button clicked!");
-    let imdbId = event.target.getAttribute("data-imdbid");
-    console.log("IMDB ID: ", imdbId);
-    let movie = moviesList.find((movie) => movie.imdbID === imdbId);
-    console.log("Movie to add to watch list: ", movie);
-    if (movie) {
-        let watchList = JSON.parse(localStorage.getItem("watchList")) || [];
-        // check if the movie is already in the watch list
-        if (watchList.find((m) => m.imdbID === imdbId)) {
-            return;
-        }
-        watchList.push(movie);
-        localStorage.setItem("watchList", JSON.stringify(watchList));
-    }
-}
-
-
-
-//Ehsan
-// Create a function that will search for movies and return the list of movies
-// The function will use the titleInput value to search for movies
-// If the titleInput is empty, it will search by other parameters (year, genre, streaming service and price)
-async function search() {
-    let streamingData = null;
-    if (titleInput.value.trim() !== "") {
-        streamingData = await getStreamingDataByTitle(titleInput.value.trim());
-    } else {
-        let params = createFilterSearchParams(
-            2024,
-            2024,
-            null,
-            ["prime", "netflix"],
-            false
-        );
-        streamingData = await getStreamingData(params, API_URL.Filter_Search);
-    }
-
-    return createMovieList(streamingData);
-}
-
 async function createMovieList(streamingData) {
     moviesList = [];
     for (
@@ -248,11 +180,11 @@ Usage Example:
 const sortedMoviesByYear = sortMovies(movies, "year");
 const sortedMoviesByIMDBRating = sortMovies(movies, "imdbRating");
 */
-function sortMovies(moviesList, sortingKey) {
+function sortMovies(moviesList, sortingKey, ascending = false) {
     // Check if the sortingKey is valid
-    if (!moviesList.length || !moviesList[0][sortingKey]) {
+    if (["imdbRating", "year"].indexOf(sortingKey) === -1) {
         console.error("Invalid sorting key or empty movie list");
-        return [];
+        return moviesList;
     }
 
     // Sorting function based on the sortingKey
@@ -270,7 +202,11 @@ function sortMovies(moviesList, sortingKey) {
     };
 
     // Sort the moviesList array
-    return moviesList.slice().sort(sortingFunction);
+    if (ascending) {
+        return moviesList.slice().sort(sortingFunction).reverse();
+    } else {
+        return moviesList.slice().sort(sortingFunction);
+    }
 }
 
 /*
@@ -291,30 +227,17 @@ function getValueForKey(movie, sortingKey) {
 }
 
 //Ehsan
-function showResults(movies) {
+function showResultsInIndex(movies) {
     const movieContainer = document.querySelector("#movie-container");
     movieContainer.innerHTML = "";
     // create the movie cards and display them
     for (let movie of movies) {
-        console.log(movie);
-        let movieCard = createMovieCard(movie);
+        let movieCard = createMovieCard(movie, "Detail", "handleCardDetailBtn");
         movieContainer.appendChild(movieCard);
     }
     makeCardsEqualSize();
 }
 
-//Hussein
-// this code will be called when the watch list page is loaded
-function loadWatchList() {
-    // load the watchlist from the local storage
-    // create the movie cards and display them
-}
-
-async function handleSearch(e) {
-    let movies = await search();
-
-    showResults(movies);
-}
 
 //On page load get the streaming data for the new movies and shows them
 async function initPage() {
@@ -328,11 +251,13 @@ async function initPage() {
     );
     let streamingData = await getStreamingData(params, API_URL.Filter_Search);
     moviesList = await createMovieList(streamingData);
-    showResults(moviesList);
+    showResultsInIndex(moviesList);
 }
-document.addEventListener("DOMContentLoaded", function () {
-    document
-        .querySelector("#search-btn")
-        .addEventListener("click", handleSearch);
-    initPage();
-});
+
+function handleSorting() {
+    let sortingKey = document.querySelector("#sorting-key").value;
+    let ascending =
+        document.querySelector("#sorting-order").textContent === "0↗9";
+    moviesList = sortMovies(moviesList, sortingKey, ascending);
+    showResultsInIndex(moviesList);
+}

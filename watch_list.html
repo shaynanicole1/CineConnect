@@ -10,123 +10,66 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/css/style.css">
     <script src="https://kit.fontawesome.com/4fed1b79f0.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <body>
+    <div id="modal-dialog-container"></div>
     <header>
         <nav class="navbar is-flex-wrap-wrap is-justify-content-space-around">
             <div class="navbar-brand mx-7">
                 <a class="navbar-item is-centered" href="index.html">
                     <img src="./assets/images/logo.png" alt="logo" style="max-height: 100px;"
-                    class="mx-5 mb-0 px-2 py-0">
+                        class="mx-5 mb-0 px-2 py-0">
                 </a>
             </div>
-            <div class="navbar-item is-expanded navbar-end">
-                <div class="field has-addons">
-                    
-                        
-                       
-                    </button>
-                    </p>
-                </div>
-            </div>
+            
         </nav>
     </header>
 
     <main>
         <hr class="my-1">
-        <!-- <div class="container is-flex-wrap-wrap is-justify-content-space-around "> -->
+        <div id="main-cols" class="columns is-mobile is-multiline mt-3">
+            <div id="right-col" class="column is-12-mobile">
+                <div id="sort-cards-cols" class="columns is-mobile is-multiline">
+                    <div id="sort-col" id="" class="column is-12">
+                        <!-- sorting key select -->
+                        <div class="select ml-2">
+                            <select id="sorting-key">
+                                <option value="imdbRating">IMDb Rating</option>
+                                <option value="year">Release Year</option>
+                            </select>
+                        </div>
+                        <!-- sort order toggle button -->
+                        <button id="sorting-order" class="button ">9↘0</button>
 
-        <div class="columns is-mobile is-multiline">
-            <!-- By Year -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop mx-0 px-0" id="year">
-                <select class=" has-text-centered">
-                    <option value="year">Year</option>
-                    <option value="2024">2021-2024</option>
-                    <option value="2020">2016-2020</option>
-                    <option value="2015">2011-2015</option>
-                    <option value="2010">2006-2010</option>
-                    <option value="2005">2001-2005</option>
-                </select>
-            </div>
-
-            <!-- By Genre -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop" id="genre">
-                <select class="has-text-centered">
-                    <option value="genre">Genre</option>
-                    <option value="horror">Horror</option>
-                    <option value="fanatasy">Fantasy</option>
-                    <option value="drama">Drama</option>
-                    <option value="thriller">Thriller</option>
-                    <option value="mystery">Mystery</option>
-                    <option value="music">Music</option>
-                    <option value="drama">Drama</option>
-                    <option value="romance">Romance</option>
-                    <option value="anime">Anime</option>
-                    <option value="documentary">Documentary</option>
-                </select>
-            </div>
-
-            <!-- By Pricing -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop" id="pricing">
-                <select class=" has-text-centered">
-                    <option value="Subscription">Subscription</option>
-                    <option value="Rent">Rent/ Buy</option>
-                </select>
-            </div>
-
-            <!-- sort-key -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop">
-                <div class="dropdown mx-3">
-                    <div class="dropdown-trigger">
-                        <button class="button has-background-link-light" aria-haspopup="true"
-                            aria-controls="dropdown-menu">
-                            <span>Sort-key</span>
-                            <span class="icon is-small">
-                                <i class="fas fa-angle-down" aria-hidden="true"></i>
-                            </span>
-                        </button>
+                        <button id="sort-btn" class="button is-primary">Sort</button>
                     </div>
-                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                        <div class="dropdown-content">
-                            <p class="dropdown-item" id="price-selection">Price</p>
-                            <p class="dropdown-item" id="year-selection">Year</p>
-                            <p class="dropdown-item" id="genre-selection">Genre</p>
+                    <div id="cards-col" class="column is-12" style="border-bottom:2px solid rgb(215, 205, 205);">
+                        <div id="movie-container" class="columns is-mobile is-multiline">
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- asc/dsc -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop">
-                <button class="button has-background-link-light mx-3" id="order">Asc</button>
-            </div>
-
-            <!-- sorting -->
-            <div class="column is-12-mobile is-one-eighth-tablet is-one-eighth-desktop">
-                <button class="button mx-3 has-background-link-light" id="sort" aria-haspopup="true"
-                    aria-controls="dropdown-menu5">
-                    <span>Sort</span>
-                </button>
-            </div>
-
         </div>
+        <script>
+            const sortOrderBtn = document.getElementById("sorting-order");
 
-        <hr class="mt-1">
+            sortOrderBtn.addEventListener('click', function () {
+                if (this.textContent === '9↘0') {
+                    sortOrderBtn.textContent = '0↗9';
+                }
+                else {
+                    sortOrderBtn.textContent = '9↘0';
+                }
+            });
 
-        <div class="columns is-mobile is-multiline" id="movie-container">
-        </div>
+        </script>
+        <script src="./assets/js/api_call.js"></script>
+        <script src="./assets/js/script.js"></script>
+        <script src="./assets/js/watch_list.js"></script>
 
-        <hr class="mt-1">
-    </main>
-
-    <footer class="is-flex is-justify-content-center">
-        <p>&#169;Group-4</p>
-    </footer>
-    <script src="./assets/js/api_call.js"></script>
-
-    <script src="./assets/js/script.js"></script>
 </body>
 
 </html>
-
