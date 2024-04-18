@@ -80,6 +80,40 @@ function createMovieCard(movie) {
     return column;
 }
 
+function handleCardDetailBtn(event) {
+    //search for the movie in the moviesList array by imdbId
+    let imdbid = event.target.getAttribute("data-imdbid");
+    let movie = moviesList.find((movie) => movie.imdbID === imdbid);
+    if (movie) {
+        let modal = createModalDlg(movie);
+        modal.classList.add("is-active");
+    } else {
+        console.error("Movie not found!");
+    }
+}
+
+function makeCardsEqualSize() {
+    let maxHeight = Math.max.apply(
+        null,
+        $(".card")
+            .map(function () {
+                return $(this).height();
+            })
+            .get()
+    );
+    let maxWidth = Math.max.apply(
+        null,
+        $(".card")
+            .map(function () {
+                return $(this).width();
+            })
+            .get()
+    );
+    // Set the height of all cards to the tallest one
+    $(".card").height(maxHeight);
+    $(".card").width(maxWidth);
+}
+
 //Preeya
 
 function createModalDlg(movie) {
@@ -261,6 +295,7 @@ function showResults(movies) {
         let movieCard = createMovieCard(movie);
         movieContainer.appendChild(movieCard);
     }
+        makeCardsEqualSize();
 }
 
 //Hussein
