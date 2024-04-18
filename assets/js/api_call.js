@@ -192,7 +192,6 @@ async function getStreamingData(params, url) {
     //create the complete URL with the query string
     let searchParams = new URLSearchParams(params);
     url += "?" + searchParams.toString();
-    console.log(url);
     try {
         const responce = await fetch(url, {
             headers: headers,

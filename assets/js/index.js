@@ -51,6 +51,9 @@ function getFilterParams() {
     return params;
 }
 async function handleFilterSearch() {
+    let progressBar = document.querySelector("#progress-bar");
+    progressBar.removeAttribute("value");
+
     let params = getFilterParams();
 
     let streamingData = await getStreamingData(params, API_URL.Filter_Search);
@@ -60,6 +63,8 @@ async function handleFilterSearch() {
 
     moviesList = await createMovieList(streamingData);
     showResultsInIndex(moviesList);
+
+    progressBar.setAttribute("value", "100");
 }
 
 function getStreamingServicesList() {
@@ -112,8 +117,13 @@ function handleAddToWatchList(event) {
 }
 
 async function handleTitleSearch(e) {
+    let progressBar = document.querySelector("#progress-bar");
+    progressBar.removeAttribute("value");
+
     let movies = await search();
     showResultsInIndex(movies);
+
+    progressBar.setAttribute("value", "100");
 }
 
 async function search() {
