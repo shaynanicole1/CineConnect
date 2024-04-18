@@ -4,31 +4,6 @@
 const titleInput = document.querySelector("#movie-title");
 const MAX_MOVIES = 10;
 let moviesList = [];
-////////////////////////////////////////////////////////////
-//Test data
-// the movie object is an example of the data that you will use as input to the functions
-let movie = {
-    posterUrl: "https://m.media-amazon.com/images/I/71r9HrZl0cL._AC_SY679_.jpg",
-    title: "The Godfather",
-    runtime: "176 min",
-    rating: "PG-13",
-    imdbRating: "9.2",
-    rottentTomatesRating: "98%",
-    streaming: [
-        { service: "netflix", type: "buy", price: "$5.99", currency: "USD" },
-        { service: "netflix", type: "rent", price: "$3.99", currency: "USD" },
-        {
-            service: "prime",
-            type: "subscription",
-            price: "9.99 CAD",
-        },
-    ],
-    plot: "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-    genres: ["Crime", "Drama"],
-    year: "1972",
-    director: "Francis Ford Coppola",
-    actors: "Marlon Brando, Al Pacino, James Caan",
-};
 
 // Alexis
 // Create a function that will create a movie card and return it
@@ -294,7 +269,6 @@ function showResults(movies) {
     movieContainer.innerHTML = "";
     // create the movie cards and display them
     for (let movie of movies) {
-        console.log(movie);
         let movieCard = createMovieCard(movie);
         movieContainer.appendChild(movieCard);
     }
@@ -330,10 +304,35 @@ async function initPage() {
     moviesList = await createMovieList(streamingData);
     showResults(moviesList);
 }
+
+function addStreamingChip(streamingName) {
+    let streamingChip = document.createElement("div");
+    streamingChip.setAttribute("class", "chip column is-6 my-2");
+    streamingChip.setAttribute("data-stream-name", streamingName);
+    streamingChip.innerHTML = `${streamingName}<span class="closebtn" onclick="this.parentElement.style.display='none'">&times;</span>`;
+
+    let streamingChips = document
+        .querySelector("#streaming-chips")
+        .querySelectorAll(".chip");
+    if (
+        Array.from(streamingChips).some(
+            (chip) => chip.getAttribute("data-stream-name") === streamingName
+        )
+    ) {
+        return;
+    }
+    document.querySelector("#streaming-chips").appendChild(streamingChip);
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     document
         .querySelector("#search-btn")
         .addEventListener("click", handleSearch);
+    document
+        .getElementById("streaming-service")
+        .addEventListener("change", (e) => {
+            addStreamingChip(e.target.value);
+        });
     //initPage();
     loadWatchList();
 });
