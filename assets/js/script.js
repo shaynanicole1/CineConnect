@@ -5,6 +5,16 @@ const titleInput = document.querySelector("#movie-title");
 const MAX_MOVIES = 10;
 
 ////////////////////////////////////////////////////////////
+//shayna refine the search using user input 
+// Prompt the user for movie preferences
+var favoriteGenre = prompt("What is your favorite movie genre?");
+var minimumRating = parseFloat(prompt("What is the minimum rating you would like for a movie (out of 10)?"));
+
+// Display user preferences
+console.log("Your favorite movie genre is: " + favoriteGenre);
+console.log("Your minimum desired rating for a movie is: " + minimumRating);
+
+// You can use these preferences to filter and recommend movies accordingly
 //Test data
 // the movie object is an example of the data that you will use as input to the functions
 let movie = {
